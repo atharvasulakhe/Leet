@@ -6,17 +6,21 @@ using namespace std;
 class Solution {
 public:
     bool bfs(int node, vector<int> adj[], int vis[]) {
-    vis[node] = 1;
     queue<int> q;
     q.push(node);
+    vis[node] = 1;
+
     while (!q.empty()) {
         int n = q.front();
         q.pop();
-        for (auto it : adj[n]) {
-            if (vis[it] == -1) {
-                vis[it] = 1 - vis[n];
-                q.push(it);
-            } else if (vis[it] == vis[n]) {
+
+        for (int i = 0; i < adj[n].size(); i++) {
+            int adjacentNode = adj[n][i];
+
+            if (vis[adjacentNode] == -1) {
+                vis[adjacentNode] = 1 - vis[n];
+                q.push(adjacentNode);
+            } else if (vis[adjacentNode] == vis[n]) {
                 return false;
             }
         }
@@ -26,9 +30,8 @@ public:
 
 bool isBipartite(int V, vector<int> adj[]) {
     int vis[V];
-    for (int i = 0; i < V; i++) {
-        vis[i] = -1;
-    }
+    memset(vis, -1, sizeof(vis));
+
     for (int i = 0; i < V; i++) {
         if (vis[i] == -1) {
             if (bfs(i, adj, vis) == false) {
@@ -38,6 +41,7 @@ bool isBipartite(int V, vector<int> adj[]) {
     }
     return true;
 }
+
 
 
 };
